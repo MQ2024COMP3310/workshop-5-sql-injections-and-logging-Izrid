@@ -129,13 +129,16 @@ public class SQLiteConnectionManager {
 
         // String sql = "INSERT INTO validWords(id,word) VALUES('" + id + "','" + word + "')";
 
-        String sql = "INSERT INTO validWords(id,word) VALUES(id=?, word=?)";
+        String sql = "INSERT INTO validWords(id,word) VALUES(?, ?)";
 
         try (Connection conn = DriverManager.getConnection(databaseURL);
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.executeUpdate();
+            pstmt.setInt(1, id);
+            pstmt.setString(2, word);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
         }
 
     }
@@ -164,7 +167,8 @@ public class SQLiteConnectionManager {
             return false;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
             return false;
         }
 
